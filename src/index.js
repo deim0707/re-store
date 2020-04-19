@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {BrowserRouter} from "react-router-dom";
 import App from "./components/app";
 import ErrorBoundry from "./components/error-boundry"; //ловит ошибки при помощи ComponentDidCatch
-import BookstoreService from "./services/boostore-services";
+import BookstoreService from "./services/bookstore-services";
 import {BookstoreServiceProvider} from "./components/bookstore-service-context"; // HOC с контекстом, передаёт методы работы с "сервером"
 import store from "./store";
 
