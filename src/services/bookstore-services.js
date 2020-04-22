@@ -15,9 +15,10 @@ export default class BookstoreService {
      ];
 
     getBooks() {
-        return new Promise((resolve => { //этим Promise + задержкой делаем вид, что получаем данные с сервера
+        return new Promise(((resolve, reject) => { //этим Promise + задержкой делаем вид, что получаем данные с сервера
             setTimeout(()=> {
                 resolve(this.data)
+                // reject(new Error('Something went wrong')) //проверка, сработает ли отлов ошибок
             }, 700)
         }))
     }

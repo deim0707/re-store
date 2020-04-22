@@ -3,25 +3,31 @@ import {connect} from 'react-redux';
 import './book-list.css';
 import {withBookstoreService} from "../hoc";
 import BookListItem from "../book-list-item";
-import {booksLoaded,booksRequested} from "../../actions";
+import {booksLoaded,booksRequested,booksError} from "../../actions";
 import {compose} from "../../utils";
 import Spinner from "../spinner";
+import ErrorIndicator from "../error-indicator";
 
 
 class BookList  extends Component {
 
   componentDidMount() {
-    const {bookstoreService, booksLoaded,booksRequested} = this.props;
+    const {bookstoreService, booksLoaded,booksRequested,booksError} = this.props;
     booksRequested(); //поможет при заходе на страницу, например с другой внутренней, снова показать лоадер и загрузить книги
     bookstoreService.getBooks()
         .then((data)=> booksLoaded(data))
+        .catch((err)=>booksError(err))
   }
 
   render() {
-    const {books, loading} = this.props;
+    const {books, loading, error} = this.props;
 
     if (loading) {
       return <Spinner/>
+    }
+
+    if (error) {
+      return <ErrorIndicator/>
     }
 
     return (
@@ -41,7 +47,8 @@ class BookList  extends Component {
 const mapStateToProps = state => {
   return {
     books: state.books,
-    loading: state.loading
+    loading: state.loading,
+    error: state.error
   }
 };
 //второй вариант получения стейта с использованием деструктуризации
@@ -81,7 +88,7 @@ const mapStateToProps = state => {
 
 //4) по умолчанию произойдёт действие из 3его пункта. такой редакс умный. даже импортировать bindActionCreator не надо
 const mapDispatchToProps = {
-  booksLoaded, booksRequested
+  booksLoaded, booksRequested,booksError,
 };
 
 
