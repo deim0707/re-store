@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import './book-list.css';
 import {withBookstoreService} from "../hoc";
 import BookListItem from "../book-list-item";
-import {booksLoaded,booksRequested,booksError} from "../../actions";
+import {fetchBooks} from "../../actions";
 import {compose} from "../../utils";
 import Spinner from "../spinner";
 import ErrorIndicator from "../error-indicator";
@@ -89,16 +89,11 @@ const mapStateToProps = state => {
 
 // 5) рефакторинг в стиле Буры. тут вынесли логику из компонента. компонент отвечает за ренединг элементов
 const mapDispatchToProps = (dispatch, ownProps) => { //ownProps достаёт доступные для Коннекта пропсы
-  const {bookstoreService} = ownProps
+  const {bookstoreService} = ownProps;
   return {
-    fetchBooks: () => {
-      dispatch(booksRequested()); //поможет при заходе на страницу, например с другой внутренней, снова показать лоадер и загрузить книги
-      bookstoreService.getBooks()
-          .then( (data) => dispatch(booksLoaded(data)))
-          .catch( (err) => dispatch(booksError(err)))
-    }
+    fetchBooks: fetchBooks(bookstoreService, dispatch)
   }
-}
+};
 
 
 //используем 2 компонента высшего порядка. один написан нами, для получения компонентами методов работы с "сервером". отсюда берём метод GetBooks()
