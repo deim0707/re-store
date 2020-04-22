@@ -12,11 +12,7 @@ import ErrorIndicator from "../error-indicator";
 class BookList  extends Component {
 
   componentDidMount() {
-    const {bookstoreService, booksLoaded,booksRequested,booksError} = this.props;
-    booksRequested(); //поможет при заходе на страницу, например с другой внутренней, снова показать лоадер и загрузить книги
-    bookstoreService.getBooks()
-        .then((data)=> booksLoaded(data))
-        .catch((err)=>booksError(err))
+    this.props.fetchBooks(); //смотрим в самом конце у экспортом
   }
 
   render() {
@@ -87,9 +83,22 @@ const mapStateToProps = state => {
 // };
 
 //4) по умолчанию произойдёт действие из 3его пункта. такой редакс умный. даже импортировать bindActionCreator не надо
-const mapDispatchToProps = {
-  booksLoaded, booksRequested,booksError,
-};
+// const mapDispatchToProps = {
+//   booksLoaded, booksRequested,booksError,
+// };
+
+// 5) рефакторинг в стиле Буры. тут вынесли логику из компонента. компонент отвечает за ренединг элементов
+const mapDispatchToProps = (dispatch, ownProps) => { //ownProps достаёт доступные для Коннекта пропсы
+  const {bookstoreService} = ownProps
+  return {
+    fetchBooks: () => {
+      dispatch(booksRequested()); //поможет при заходе на страницу, например с другой внутренней, снова показать лоадер и загрузить книги
+      bookstoreService.getBooks()
+          .then( (data) => dispatch(booksLoaded(data)))
+          .catch( (err) => dispatch(booksError(err)))
+    }
+  }
+}
 
 
 //используем 2 компонента высшего порядка. один написан нами, для получения компонентами методов работы с "сервером". отсюда берём метод GetBooks()
@@ -98,6 +107,7 @@ const mapDispatchToProps = {
 //   (connect(mapStateToProps, mapDispatchToProps)
 //     (BookList));
 
+//compose - делает композицию из 2ух компонентов высшего порядка. удобнее записывать
 export default compose(
     withBookstoreService(),
     connect(mapStateToProps, mapDispatchToProps)
