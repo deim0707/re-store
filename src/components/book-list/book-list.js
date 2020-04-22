@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import './book-list.css';
 import {withBookstoreService} from "../hoc";
 import BookListItem from "../book-list-item";
-import {booksLoaded} from "../../actions";
+import {booksLoaded,booksRequested} from "../../actions";
 import {compose} from "../../utils";
 import Spinner from "../spinner";
 
@@ -11,7 +11,8 @@ import Spinner from "../spinner";
 class BookList  extends Component {
 
   componentDidMount() {
-    const {bookstoreService, booksLoaded} = this.props;
+    const {bookstoreService, booksLoaded,booksRequested} = this.props;
+    booksRequested(); //поможет при заходе на страницу, например с другой внутренней, снова показать лоадер и загрузить книги
     bookstoreService.getBooks()
         .then((data)=> booksLoaded(data))
   }
@@ -80,7 +81,7 @@ const mapStateToProps = state => {
 
 //4) по умолчанию произойдёт действие из 3его пункта. такой редакс умный. даже импортировать bindActionCreator не надо
 const mapDispatchToProps = {
-  booksLoaded,
+  booksLoaded, booksRequested
 };
 
 
