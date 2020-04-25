@@ -31,12 +31,27 @@ const bookAddedToCart = (bookId) => {
     }
 };
 
+const bookRemovedToCart = (bookId) => {
+    return {
+        type: 'BOOK_REMOVED_FROM_CART',
+        payload: bookId
+    }
+};
+
+const allBookRemovedToCart = (bookId) => {
+    return {
+        type: 'ALL_BOOKS_REMOVED_FROM_CART',
+        payload: bookId
+    }
+};
+
 //1) первый вариант. экспортировали всё наружу
 // export {
 //     booksLoaded, booksRequested, booksError, fetchBooks
 // }
 //2) но функция fetchBooks содержит все это экшены. и красивее экспортировать её одну. т.к. другие нам наруже просте не нужны
 export {
-    fetchBooks, bookAddedToCart
+    fetchBooks,
+    bookAddedToCart, bookRemovedToCart, allBookRemovedToCart
 }
 
