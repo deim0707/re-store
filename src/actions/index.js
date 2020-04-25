@@ -22,13 +22,21 @@ const fetchBooks = (bookstoreService, dispatch) => () => {
     bookstoreService.getBooks()
         .then( (data) => dispatch(booksLoaded(data)))
         .catch( (err) => dispatch(booksError(err)))
-}
+};
+
+const bookAddedToCart = (bookId) => {
+    return {
+        type: 'BOOK_ADDED_TO_CART',
+        payload: bookId
+    }
+};
+
 //1) первый вариант. экспортировали всё наружу
 // export {
 //     booksLoaded, booksRequested, booksError, fetchBooks
 // }
 //2) но функция fetchBooks содержит все это экшены. и красивее экспортировать её одну. т.к. другие нам наруже просте не нужны
 export {
-    fetchBooks
+    fetchBooks, bookAddedToCart
 }
 
