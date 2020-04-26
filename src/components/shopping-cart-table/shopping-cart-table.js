@@ -59,8 +59,8 @@ const ShoppingCartTable = ({ items, total, onIncrease, onDecrease, onDelete }) =
       </div>
   );
 };
-
-const mapStateToProps = ({ cartItems, orderTotal }) => {
+//тут, в отличие от БукЛист закидываю значения из стейта при помощи деструктуризации
+const mapStateToProps = ({shoppingCart: { cartItems, orderTotal }}) => {
   return {
     items: cartItems,
     total: orderTotal
