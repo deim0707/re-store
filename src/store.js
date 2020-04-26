@@ -1,25 +1,26 @@
 import {createStore, applyMiddleware} from "redux";
+import thunkMiddleware from 'redux-thunk';
 import reducer from "./reducers";
 
 //enhancer - меняет весь процесс. в т.ч. создание стор и диспатч
 //middleware - может поменять Только диспатч
 
 //под next в этих случаях обычно понимают dispatch. следующий в цепочке dispatch
-const logMiddleware = (store) => (next) => (action) => {
-    console.log(action.type, store.getState());
-    return next(action);
-};
-//аналог функции ниже, с использованием не enhancer, a middleware
-const stringMiddleware = () => (next) => (action) => {
-    if (typeof  action === 'string') {
-        return next({
-            type: action
-        })
-    }
-    else {
-        return next(action)
-    }
-};
+// const logMiddleware = (store) => (next) => (action) => {
+//     console.log(action.type, store.getState());
+//     return next(action);
+// };
+// //аналог функции ниже, с использованием не enhancer, a middleware
+// const stringMiddleware = () => (next) => (action) => {
+//     if (typeof  action === 'string') {
+//         return next({
+//             type: action
+//         })
+//     }
+//     else {
+//         return next(action)
+//     }
+// };
 
 //заменяем механизм создания стор. принимает createStore и возвращает его новую релизацию. метод: enhancer. паттерн функционального программирование. менее популярный, нежели middleware. уже существует множество таких библиотек.
 // const stringEnhancer = (createStore) => (...args) => {
@@ -43,12 +44,20 @@ const stringMiddleware = () => (next) => (action) => {
 
 
 
-const store = createStore(reducer, applyMiddleware(stringMiddleware, logMiddleware));
-
+const store = createStore(reducer);
+// const store = createStore(reducer, applyMiddleware(thunkMiddleware,stringMiddleware, logMiddleware));
+//
+// //демонастрация работы с библиотекой thunk. позволит класть в диспетч не только объект, но и функцию
+// const delayedActionCreator = (timeOut) => (dispatch) => {
+//     setTimeout(() => dispatch({
+//         type: 'DELAY_ACTION'
+//     }), timeOut)
+// };
+// store.dispatch(delayedActionCreator(2500));
 
 
 //проверяем, что наше преобразование диспетча работает. и приложение не крашится
-store.dispatch('HELLO_WORLD');
+// store.dispatch('HELLO_WORLD');
 
 
 export default store;
