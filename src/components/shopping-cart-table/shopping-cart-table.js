@@ -54,7 +54,7 @@ const ShoppingCartTable = ({ items, total, onIncrease, onDecrease, onDelete }) =
         </table>
 
         <div className="total">
-          Total: ${total}
+          {/*Total: ${total}*/}
         </div>
       </div>
   );

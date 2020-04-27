@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {BrowserRouter} from "react-router-dom";
+import {HashRouter as Router} from "react-router-dom";
 import App from "./components/app";
 import ErrorBoundry from "./components/error-boundry"; //ловит ошибки при помощи ComponentDidCatch
 import BookstoreService from "./services/bookstore-services";
@@ -15,9 +15,9 @@ ReactDOM.render(
       <Provider store={store}>
           <ErrorBoundry>
               <BookstoreServiceProvider value={booksStoreService}>
-                  <BrowserRouter>
+                  <Router>
                       <App/>
-                  </BrowserRouter>
+                  </Router>
               </BookstoreServiceProvider>
           </ErrorBoundry>
       </Provider>

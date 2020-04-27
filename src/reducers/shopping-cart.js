@@ -60,8 +60,24 @@ const updateOrder = (state, bookId, quantity) => {
     const itemIndex = state.shoppingCart.cartItems.findIndex(({id})=> id === bookId); //айди элемента, если он уже есть в списке (если нет, то вернёт -1)
     const item = state.shoppingCart.cartItems[itemIndex];
     const newItem = updateCartItem(book, item, quantity);
+    const numItemsNow = state.shoppingCart.numItems; //колличество товаров в корзине
+    //тут когда-то должен появиться подсчёт всей суммы заказа
+    // let orderItem = 0;
+    // if(!item && state.shoppingCart.orderTotal === 0) {
+    //     orderItem = newItem.total;
+    // }
+    // let orderItem1 = state.shoppingCart.cartItems[0] ? state.shoppingCart.cartItems[0].total : 0;
+    // let orderItem2 = state.shoppingCart.cartItems[1] ? state.shoppingCart.cartItems[1].total : 0;
+    //
+    // if(itemIndex<-1) {
+    //     orderItem = orderItem1 + orderItem2
+    // }
+    // // console.log(orderItem1 + '     ' + orderItem2 + '     ' +  orderItem)
+    // console.log(state.shoppingCart)
 
+//////////////////////
     return {
+        numItems: numItemsNow+quantity,
         orderTotal: 0,
         cartItems: updateCartItems(state.shoppingCart.cartItems, newItem, itemIndex)
     }
@@ -74,7 +90,9 @@ const updateShoppingCart = (state, action) => {
     if (state === undefined) {
         return {
             cartItems: [],
-            orderTotal: 0
+            orderTotalItems: 0,
+            orderTotal: 0,
+            numItems: 0
         }
     }
 
